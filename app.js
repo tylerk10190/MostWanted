@@ -4,6 +4,8 @@ Build all of your functions for displaying and gathering information below (GUI)
 */
 
 // app is the function called to start the entire application
+let people = data
+
 function app(people){
   var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   switch(searchType){
@@ -13,6 +15,8 @@ function app(people){
       break;
     case 'no':
       // TODO: search by traits
+      otherMainMenu()
+      // promptFor(, userInput).toLowerCase();
       break;
       default:
     app(people); // restart app
@@ -51,6 +55,85 @@ function mainMenu(person, people){
     return mainMenu(person, people); // ask again
   }
 }
+
+function otherMainMenu(poeple){
+
+  /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
+
+  // if(!person){
+  //   alert("Could not find that individual.");
+  //   return app(people); // restart
+  //   }
+
+  let userInput = prompt("Enter search criteria from list: Gender, Age, Height, Weight, Eye Color, Occupation").toLowerCase()
+  switch(userInput){
+     case "gender":
+    // TODO: get person's info
+      userInput = prompt("Enter: Male or Female").toLowerCase()
+        if(userInput == "male")
+        {
+         let males = people.filter(function (el)
+         {
+            if(el.gender == "male")
+              console.log(el.firstName + " " + el.lastName)
+            return males;
+
+         })
+         // console.log("male")
+        }
+        else if(userInput == "female")
+        {
+          let females = people.filter(function (el)
+          {
+            if(el.gender == "female")
+              console.log(el.firstName + " " + el.lastName)
+            return females;
+          })
+          // console.log("female")
+        }
+        else
+        {
+         alert("Please enter an option from the list")
+        }
+      break;
+    case "age":
+    // TODO: get person's family
+    prompt("Enter a numerical value for Age")
+    console.log(people[1].dob)
+    break;
+    case "height":
+    // TODO: get person's descendants
+    userInput = prompt("Please enter the height in inches")
+      let height = people.filter(function(el)
+      {
+        if(el.height == userInput){
+          console.log(el.firstName + " " + el.lastName)
+        }
+      })
+    // console.log("height")
+    break;
+    case "weight":
+      prompt()
+    console.log("weight")
+    break;
+    case "eye color":
+    console.log("eye color")
+    break; // stop execution
+    case "occupation":
+    console.log("occupation")
+    break;
+    case "flamingo":
+    alert("Fuck off Nevin!")
+    return otherMainMenu()
+    case "bannana":
+    alert("Fuck off Nevin!")
+    return otherMainMenu()
+    default:
+    alert("Please choose an criteria from the list")
+    return otherMainMenu(); // ask again
+  }
+  }
+
 
 function searchByName(people){
   var firstName = promptFor("What is the person's first name?", chars);
@@ -101,3 +184,6 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
+
+
+
