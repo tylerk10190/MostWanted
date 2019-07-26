@@ -7,16 +7,14 @@ Build all of your functions for displaying and gathering information below (GUI)
 let people = data
 
 function app(people){
-  var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
+  var searchType = prompt("Do you know the name of the person you are looking for? Enter 'yes' or 'no'").toLowerCase();
   switch(searchType){
     case 'yes':
       var foundPerson = searchByName(people);
       mainMenu(foundPerson, people);
       break;
     case 'no':
-      // TODO: search by traits
-      otherMainMenu()
-      // promptFor(, userInput).toLowerCase();
+      otherMainMenu(people)
       break;
       default:
     app(people); // restart app
@@ -33,7 +31,6 @@ function mainMenu(person, people){
     alert("Could not find that individual.");
     return app(people); // restart
   }
-
   var displayOption = prompt("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'");
 
   switch(displayOption){
@@ -56,71 +53,29 @@ function mainMenu(person, people){
   }
 }
 
-function otherMainMenu(poeple){
-
-  /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
-
-  // if(!person){
-  //   alert("Could not find that individual.");
-  //   return app(people); // restart
-  //   }
+function otherMainMenu(people)
+{
 
   let userInput = prompt("Enter search criteria from list: Gender, Age, Height, Weight, Eye Color, Occupation").toLowerCase()
-  switch(userInput){
-     case "gender":
-    // TODO: get person's info
-      userInput = prompt("Enter: Male or Female").toLowerCase()
-        if(userInput == "male")
-        {
-         let males = people.filter(function (el)
-         {
-            if(el.gender == "male")
-              console.log(el.firstName + " " + el.lastName)
-            return males;
-
-         })
-         // console.log("male")
-        }
-        else if(userInput == "female")
-        {
-          let females = people.filter(function (el)
-          {
-            if(el.gender == "female")
-              console.log(el.firstName + " " + el.lastName)
-            return females;
-          })
-          // console.log("female")
-        }
-        else
-        {
-         alert("Please enter an option from the list")
-        }
-      break;
+  switch(userInput)
+  {
+    case "gender":
+    searchByGender(people)
+    break;
     case "age":
-    // TODO: get person's family
-    prompt("Enter a numerical value for Age")
-    console.log(people[1].dob)
+    // dobToAge(people)
     break;
     case "height":
-    // TODO: get person's descendants
-    userInput = prompt("Please enter the height in inches")
-      let height = people.filter(function(el)
-      {
-        if(el.height == userInput){
-          console.log(el.firstName + " " + el.lastName)
-        }
-      })
-    // console.log("height")
+    searchByHeight(people)
     break;
     case "weight":
-      prompt()
-    console.log("weight")
+     searchByWeight(people)
     break;
     case "eye color":
-    console.log("eye color")
-    break; // stop execution
+    searchByEyeColor(people)
+    break;
     case "occupation":
-    console.log("occupation")
+    searchByOccupation(people)
     break;
     case "flamingo":
     alert("Fuck off Nevin!")
@@ -132,15 +87,121 @@ function otherMainMenu(poeple){
     alert("Please choose an criteria from the list")
     return otherMainMenu(); // ask again
   }
-  }
+}
 
+function searchByGender(people)
+{
+  let userInput = prompt("Enter: Male or Female").toLowerCase()
+        if(userInput == "male")
+        {
+         let males = people.filter(function (el)
+         {
+            if(el.gender == "male"){
+              console.log(el.firstName + " " + el.lastName)
+            
+            return true;
+          }
+          else{
+            return false;
+          }
+
+         })
+        }
+        else if(userInput == "female")
+        {
+          let females = people.filter(function (el)
+          {
+            if(el.gender == "female"){
+              console.log(el.firstName + " " + el.lastName)
+            
+               return true;
+          }
+          else{
+            return false;
+          }
+          })
+          
+        }
+        else
+        {
+         alert("Please enter an option from the list")
+        }
+}
+
+function searchByHeight(people)
+{
+  let userInput = prompt("Please enter the height in inches")
+      let height = people.filter(function(el)
+      {
+        if(el.height == userInput)
+          {
+          console.log(el.firstName + " " + el.lastName)
+          return true;
+          }
+        else
+          {
+            return false;
+          }
+      })
+}
+
+function searchByWeight(people)
+{
+  let userInput = prompt("Please enter the weight")
+      let weight = people.filter(function(el)
+      {
+        if(el.weight == userInput)
+        {
+          console.log(el.firstName + " " + el.lastName)
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      })
+}
+
+function searchByEyeColor(people)
+{
+   let userInput = prompt("Please enter eye color").toLowerCase()
+      let eyeColor = people.filter(function(el)
+      {
+        if(el.eyeColor == userInput)
+        {
+          console.log(el.firstName + " " + el.lastName)
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      })
+}
+
+function searchByOccupation(people)
+{
+  let userInput = prompt("Please enter occupation").toLowerCase()
+      let occupation = people.filter(function(el)
+      {
+        if(el.occupation == userInput)
+        {
+          console.log(el.firstName + " " + el.lastName)
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      })
+}
 
 function searchByName(people){
-  var firstName = promptFor("What is the person's first name?", chars);
-  var lastName = promptFor("What is the person's last name?", chars);
+  var firstName = promptFor("What is the person's first name?", chars(people));
+  var lastName = promptFor("What is the person's last name?", chars(people));
 
-  var foundPerson = people.filter(function(person){
-    if(person.firstName === firstName && person.lastName === lastName){
+  var foundPerson = people.filter(function(el){
+    if(people.firstName === firstName && people.lastName === lastName){
       return true;
     }
     else{
@@ -150,6 +211,20 @@ function searchByName(people){
   // TODO: find the person using the name they entered
   return foundPerson;
 }
+
+function dobToAge(people)
+{
+
+let userInput = prompt("Please enter the numerical value of Age")
+  let today = people.parse(dob) 
+  let minutes = 1000 * 60;
+  let hours = minutes * 60;
+  let days = hours * 24;
+  let years = days * 365;
+  let ageInYears = math.round(today / years)
+  console.log(ageInYears);
+}
+
 
 // alerts a list of people
 function displayPeople(people){
