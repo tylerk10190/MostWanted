@@ -224,28 +224,37 @@ if (foundPeoples.length > 1) {
 
 
 }
-// searchByName(people);
+// searchByAge(people);
         // let elAge = dobToAge(el.dob);
 
-function dobToAge(people)
+function dobToAge(dob)
 {
-
-  let testDate = new Date();
-
-let userInput = prompt("Please enter D.O.B (format mmddyyyy)")
-  // let today = people.parse(dob) 
-  // let minutes = 1000 * 60;
-  // let hours = minutes * 60;
-  // let days = hours * 24;
-  // let years = days * 365;
-  let years = userInput
-  let ageInYears = Math.round(testDate - years);
-  console.log(ageInYears);
+  let today = new Date()
+  let month = today.getMonth() + 1;
+  let date = today.getDate();
+  let year =  today.getFullYear();
+  let todayDate = month + "/" + date + "/" + year
+  let dobArray = dob.split("/");
+  let dateArray = todayDate.split("/");
+  // console.log("I am " + (dateArray[2] - dobArray[2]) + " years old!");
+  let dateMonthbig = parseInt(dobArray[0]) < parseInt(dateArray[0]); 
+  let monthsEqual = parseInt(dobArray[0]) === parseInt(dateArray[0]);
+  let dayEqualish = parseInt(dobArray[1]) <= parseInt(dateArray[1]);
+  
+    if (dateMonthbig || (monthsEqual && dayEqualish))
+      // parseInt(dobArray[0]) === parseInt(dateArray[0] 
+       // && parseInt(dobArray[1]) <= parsInt(dateArray[1])
+  {
+    console.log(parseInt(dateArray[2]) - parseInt(dobArray[2]))
+  }
+  else{
+      console.log(parseInt(dateArray[2]) - parseInt(dobArray[2]) - 1)
+  }  
 
   // return the actual age
 }
-// dobToAge(data)
-
+dobToAge(prompt("Please enter a date of birth. Format: mm/dd/yyyy"))
+// write searchByAge() next
 
 
 // alerts a list of people
