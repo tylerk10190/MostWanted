@@ -58,14 +58,73 @@ function mainMenu(person, people){
 function otherMainMenu(people)
 {
 
-  let userInput = prompt("Enter search criteria from list: Gender, Age, Height, Weight, Eye Color, Occupation").toLowerCase()
+
+  let results = [0,1]
+  while(results.length > 1){
+  let userInput = prompt("Enter search criteria from list: Gender, Age, Height, Weight, Eye Color, Occupation.").toLowerCase()
   switch(userInput)
   {
     case "gender":
-    searchByGender(people)
+    results = searchByGender(people);
+    alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")    
     break;
     case "age":
-    searchByAge(people)
+    results = searchByAge(people);
+    if(results.length === 0)
+    {
+      alert("No Results Found")
+      return searchByAge(people);
+    }
+    alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")
+    break;
+    case "height":
+    results = searchByHeight(people)
+    alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")
+    break;
+    case "weight":
+     results = searchByWeight(people)
+    alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")
+    break;
+    case "eye color":
+    results = searchByEyeColor(people)
+    alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")
+    break;
+    case "occupation":
+    results = searchByOccupation(people)
+    alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")
+    break;
+    case "flamingo":
+    alert("Fuck off Nevin!")
+    return otherMainMenu()
+    case "banana":
+    alert("Fuck off Nevin!")
+    return otherMainMenu()
+    default:
+    alert("Please choose an criteria from the list")
+    return otherMainMenu(); // ask again
+  }
+  people = results;
+    if(people.length == 1)
+      {
+        userInput = prompt("Found " + displayPeopleReturn(people) + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'")
+        if(userInput = "info"){
+          displayPersonInfo(people[0]);
+        }
+      }
+
+  }
+}
+
+function followUpQuestions(people, results){
+  switch(people)
+  {
+    case "age":
+    results = searchByAge(people)
+    if(results.length === 0)
+    {
+      alert("No Results Found")
+      return searchByAge(people);
+    }
     break;
     case "height":
     searchByHeight(people)
@@ -88,19 +147,22 @@ function otherMainMenu(people)
     default:
     alert("Please choose an criteria from the list")
     return otherMainMenu(); // ask again
-  }
 }
+}
+
 
 function searchByGender(people)
 {
+  let searchResult = []
   let userInput = prompt("Enter: Male or Female").toLowerCase()
         if(userInput == "male")
         {
-         let males = people.filter(function (el)
+         searchResult = people.filter(function (el)
          {
             if(el.gender == "male"){
-              console.log(el.firstName + " " + el.lastName)
-            
+              // console.log(el.firstName + " " + el.lastName)
+            searchResult += el.firstName + " " + el.lastName + "\n";
+            // alert("Search results that meet your criteria:" + "\n" + searchResult + "\n" + "Search by new criteria to narrow results.")
             return true;
           }
           else{
@@ -111,10 +173,11 @@ function searchByGender(people)
         }
         else if(userInput == "female")
         {
-          let females = people.filter(function (el)
+          searchResult = people.filter(function (el)
           {
             if(el.gender == "female"){
-              console.log(el.firstName + " " + el.lastName)
+              // console.log(el.firstName + " " + el.lastName)
+              displayPeople(people);
             
                return true;
           }
@@ -128,6 +191,8 @@ function searchByGender(people)
         {
          alert("Please enter an option from the list")
         }
+    // alert("Search results that meet your criteria:" + "\n" + searchResult + "\n" + "Search by new criteria to narrow results.")    
+    return searchResult;
 }
 
 function searchByHeight(people)
@@ -255,13 +320,13 @@ function dobToAge(dob)
 function searchByAge(people)
 {
   let userInput = (prompt("Please enter the age you would like to search for"))
-  let age = people.filter(function(el)
+  let filterResults = people.filter(function(el)
   {
     let elAge = dobToAge(el.dob)
     let ageResults = elAge - userInput
     if(ageResults == 0)
     {
-      console.log(el.firstName + " " + el.lastName)
+      // console.log(el.firstName + " " + el.lastName)
       return true;
   }
     else 
@@ -269,9 +334,43 @@ function searchByAge(people)
       return false;
     }
   })
-// if(false){
+
+  return filterResults;
+}
+
+// function searchByMultiple(people)
+// {
+//   let userInput = "Please enter all the criteria you would like to search for.";
+//   let multipleFinds = people.filter(function(el)
+//   {
+//     for(let i = 0, i = el.length, i++;)
+//       if(i === userInput)
+//       {
+//         console.log(el.fistName + " " + el.lastName)
+//         return true;
+//       }
+//       else{
+//         return false;
+//       }
+//   })
+
 // }
 
+function findParents(people){
+let parentResults = []
+let filterResults = people.filter(function(el){
+  if(el.parents /= [])
+    {
+      return false;
+    }
+  else
+    {
+      el.parents += parentResults
+      return true;
+    }
+})
+console.log(parentResults)
+return parentResults;
 }
 
 
@@ -281,6 +380,12 @@ function displayPeople(people){
     return person.firstName + " " + person.lastName;
   }).join("\n"));
 
+}
+
+function displayPeopleReturn(people){
+  return people.map(function(person){
+    return person.firstName + " " + person.lastName;
+  }).join("\n");
 }
 
 function displayPersonInfo(person){
@@ -330,6 +435,8 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
+
+
 
 
 
