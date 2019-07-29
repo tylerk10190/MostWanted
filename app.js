@@ -37,11 +37,9 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-    // TODO: get person's info
     displayPersonInfo(person)
     break;
     case "family":
-    // TODO: get person's family
     displayPersonFamily(person)
     break;
     case "descendants":
@@ -67,7 +65,7 @@ function otherMainMenu(people)
     searchByGender(people)
     break;
     case "age":
-    // dobToAge(people)
+    searchByAge(people)
     break;
     case "height":
     searchByHeight(people)
@@ -236,25 +234,45 @@ function dobToAge(dob)
   let todayDate = month + "/" + date + "/" + year
   let dobArray = dob.split("/");
   let dateArray = todayDate.split("/");
-  // console.log("I am " + (dateArray[2] - dobArray[2]) + " years old!");
   let dateMonthbig = parseInt(dobArray[0]) < parseInt(dateArray[0]); 
   let monthsEqual = parseInt(dobArray[0]) === parseInt(dateArray[0]);
   let dayEqualish = parseInt(dobArray[1]) <= parseInt(dateArray[1]);
   
     if (dateMonthbig || (monthsEqual && dayEqualish))
-      // parseInt(dobArray[0]) === parseInt(dateArray[0] 
-       // && parseInt(dobArray[1]) <= parsInt(dateArray[1])
   {
-    console.log(parseInt(dateArray[2]) - parseInt(dobArray[2]))
+    let actualAge = parseInt(dateArray[2]) - parseInt(dobArray[2]);
+    return(actualAge);
   }
   else{
-      console.log(parseInt(dateArray[2]) - parseInt(dobArray[2]) - 1)
+    let actualAge = (parseInt(dateArray[2]) - parseInt(dobArray[2])) - 1;
+    return(actualAge);
   }  
 
-  // return the actual age
 }
-dobToAge(prompt("Please enter a date of birth. Format: mm/dd/yyyy"))
-// write searchByAge() next
+// dobToAge(prompt("Please enter a date of birth. Format: mm/dd/yyyy"))
+
+
+function searchByAge(people)
+{
+  let userInput = (prompt("Please enter the age you would like to search for"))
+  let age = people.filter(function(el)
+  {
+    let elAge = dobToAge(el.dob)
+    let ageResults = elAge - userInput
+    if(ageResults == 0)
+    {
+      console.log(el.firstName + " " + el.lastName)
+      return true;
+  }
+    else 
+    {
+      return false;
+    }
+  })
+// if(false){
+// }
+
+}
 
 
 // alerts a list of people
