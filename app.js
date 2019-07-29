@@ -7,7 +7,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 let people = data
 
 function app(people){
-  var searchType = prompt("Do you know the name of the person you are looking for? Enter 'yes' or 'no'").toLowerCase();
+  var searchType = prompt ("Do you know the name of the person you are looking for? Enter 'yes' or 'no'").toLowerCase();
   switch(searchType){
     case 'yes':
       var foundPerson = searchByName(people);
@@ -197,8 +197,8 @@ function searchByOccupation(people)
 }
 
 function searchByName(people){
-  var firstName = promptFor("What is the person's first name?", chars(people));
-  var lastName = promptFor("What is the person's last name?", chars(people));
+  var firstName = promptFor ("What is the person's first name?", chars);
+  var lastName = promptFor ("What is the person's last name?", chars);
 
   var foundPerson = people.filter(function(el){
     if(people.firstName === firstName && people.lastName === lastName){
@@ -208,7 +208,10 @@ function searchByName(people){
       return false;
     }
   })
+
+
   // TODO: find the person using the name they entered
+
   return foundPerson;
 }
 
@@ -227,22 +230,29 @@ let userInput = prompt("Please enter the numerical value of Age")
 
 
 // alerts a list of people
+
+
 function displayPeople(people){
   alert(people.map(function(person){
     return person.firstName + " " + person.lastName;
   }).join("\n"));
 }
 
+
 function displayPerson(person){
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
+
   var personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
   // TODO: finish getting the rest of the information to display
   alert(personInfo);
 }
 
+
+
 // function that prompts and validates user input
+
 function promptFor(question, valid){
   do{
     var response = prompt(question).trim();
@@ -250,7 +260,9 @@ function promptFor(question, valid){
   return response;
 }
 
+
 // helper function to pass into promptFor to validate yes/no answers
+
 function yesNo(input){
   return input.toLowerCase() == "yes" || input.toLowerCase() == "no";
 }
