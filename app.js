@@ -7,6 +7,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 let people = data;
 
 function app(people){
+
   let searchType = prompt("Do you know the name of the person you are looking for? Enter 'yes' or 'no'").toLowerCase();
   switch(searchType){
     case 'yes':
@@ -353,6 +354,8 @@ function findSpouse(person, people){
 }
 
 // alerts a list of people
+
+
 function displayPeople(people){
   alert(people.map(function(person){
     return person.firstName + " " + person.lastName;
@@ -365,6 +368,7 @@ function displayPeopleReturn(people){
     return person.firstName + " " + person.lastName;
   }).join("\n");
 }
+
 
 function displayPersonInfo(person){
   // print all of the information about a person:
@@ -384,6 +388,7 @@ function displayPersonInfo(person){
 }
 
 
+<<<<<<< HEAD
 function displayPeopleInfo(people){
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
@@ -398,7 +403,16 @@ function displayPeopleInfo(people){
 
 }
 
-function displayPersonFamily(person,people){
+
+function promptFor(question, valid){
+  do{
+    var response = prompt(question).trim();
+  } while(!response || !valid(response));
+  return response;
+}
+
+
+function displayPersonFamily(person){
   var familyInfo = "Name: " + person.firstName + " " + person.lastName + "\n";
   familyInfo += "Parent(s): " + displayPeopleInfo(findParents(person, people)) + "\n";
   familyInfo += "Curent Spouse: " + displayPeopleInfo(findSpouse(person, people)) + "\n";
@@ -420,6 +434,7 @@ function displayPersonFamily(person,people){
 // }
 
 // helper function to pass into promptFor to validate yes/no answers
+
 function yesNo(input){
   return input.toLowerCase() == "yes" || input.toLowerCase() == "no";
 }
