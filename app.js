@@ -45,6 +45,7 @@ function mainMenu(person, people){
     break;
     case "descendants":
     // TODO: get person's descendants
+     alert(printDescendantNames(findDescendants(data, person)));
     break;
     case "restart":
     app(people); // restart
@@ -94,13 +95,7 @@ function otherMainMenu(people)
     results = searchByOccupation(people)
     alert("Search results that meet your criteria:" + "\n" + displayPeopleReturn(results) + "\n" + "Search by new criteria to narrow results.")
     break;
-    case "flamingo":
-    alert("Fuck off Nevin!")
-    return otherMainMenu()
-    case "banana":
-    alert("Fuck off Nevin!")
-    return otherMainMenu()
-    default:
+   
     alert("Please choose an criteria from the list")
     return otherMainMenu(); // ask again
   }
@@ -115,6 +110,17 @@ function otherMainMenu(people)
 
   }
 }
+
+function createParentIdArrays(array){
+  let test2 = [];
+  let a = array.map(a => a.parents[0]);
+  let b = array.map(a => a.parents[1]);
+  test2.push(a);
+  test2.push(b);
+  return test2;
+}
+
+
 
 function followUpQuestions(people, results){
   switch(people)
@@ -139,12 +145,6 @@ function followUpQuestions(people, results){
     case "occupation":
     searchByOccupation(people)
     break;
-    case "flamingo":
-    alert("Fuck off Nevin!")
-    return otherMainMenu()
-    case "bannana":
-    alert("Fuck off Nevin!")
-    return otherMainMenu()
     default:
     alert("Please choose an criteria from the list")
     return otherMainMenu(); // ask again
@@ -360,7 +360,7 @@ function searchByAge(people)
 function findParents(people){
 let parentResults = []
 let filterResults = people.filter(function(el){
-  if(el.parents /= [])
+  if(el.parents = [])
     {
       return false;
     }
@@ -374,6 +374,23 @@ console.log(parentResults)
 return parentResults;
 }
 
+function findSiblings(array, person){
+  if(person.parents.length == 0){
+      console.log("No Siblings")
+  }
+  else{
+      let separateArrays = createParentIdArrays(array);
+      let parent1Match = searchForParentMatch(separateArrays, person.parents[0]);
+      let parent2Match = searchForParentMatch(separateArrays, person.parents[1]);
+      let intersection = parent1Match.filter(element => parent2Match.includes(element));
+      let childrenObjects = convertIndexToObject(data, intersection);
+      let siblingObjects = removePersonFromArray(childrenObjects, person);
+      let siblingNames = printSiblingNames(siblingObjects);
+      return siblingNames;
+  }
+}
+
+
 
 // alerts a list of people
 
@@ -386,7 +403,8 @@ function displayPeople(people){
 }
 
 function displayPeopleReturn(people){
-  return people.map(function(person){
+  return people.map(function(person)
+  {
     return person.firstName + " " + person.lastName;
   }).join("\n");
 }
@@ -424,9 +442,62 @@ function displayPersonFamily(person){
   var familyInfo = "Name: " + person.firstName + " " + person.lastName + "\n";
   familyInfo += "Parents: " + person.parents + "\n";
   familyInfo += "Curent Spouse: " + person.currentSpouse + "\n";
+  familyInfo += 
+
   console.log("SEARCH RESULTS:" + "\n" + familyInfo);
 }
 
+
+
+
+function displayDescendants(person){
+    let personInfo = person.id;
+    for(let i = 0; i < data.length; i++)
+        if(person.id = person[i].parents);
+    return person[i];
+}
+
+function printDescendantNames(objectArray){
+  let listOfNames = [];
+  for(let i = 0; i < objectArray.length; i++){
+      let personInfo = "Descendant: " + objectArray[i].firstName + " " + objectArray[i].lastName + "\n";
+      console.log(personInfo);
+      listOfNames.push(personInfo);
+  }
+  return listOfNames;
+}
+
+function findDescendants(array, parent){
+  let descendants = [];
+  let nonDescendants = [];
+  let separateArrays = createParentIdArrays(array);
+  let idMatch = searchForParentMatch(separateArrays, parent.id);
+  let children = convertIndexToObject(data, idMatch);
+  for(let i = 0; i < children.length; i++){
+      descendants.push(children[i]);
+      let grandchildCheck = findDescendants(data, children[i]);
+      if(!Array.isArray(grandchildCheck) || !grandchildCheck.length){
+          nonDescendants.push(grandchildCheck);
+      }
+      else{
+          descendants.push(grandchildCheck[0]); 
+      }
+  }
+  return descendants;  
+}
+
+
+function searchForParentMatch(array, value){
+  let indexes = [], i = -1, j = -1;
+  
+  while((i = array[0].indexOf(value, i + 1)) != -1){
+      indexes.push(i);
+  }
+  while((j = array[1].indexOf(value, j + 1)) != -1){
+      indexes.push(j);
+  }
+  return indexes;
+}
 // function displayPersonDescendants(person){
 //   var desInfo = "Name: " + person.firstName + " " + person.lastName + "\n";
 //   desInfo += "Descendants: " + person.
@@ -442,6 +513,53 @@ function displayPersonFamily(person){
 // }
 
 // helper function to pass into promptFor to validate yes/no answers
+
+function convertIndexToObject(array, childIndex){
+  let objectArray = [];
+  for(let i = 0; i < array.length && i < childIndex.length; i++){
+          objectArray.push(array[childIndex[i]]);
+      }
+  return objectArray;
+}
+
+function printChildNames(objectArray){
+  let listOfNames = [];
+  for(let i = 0; i < objectArray.length; i++){
+      let personInfo = "Child: " + objectArray[i].firstName + " " + objectArray[i].lastName + "\n";
+      console.log(personInfo);
+      listOfNames.push(personInfo);
+  }
+  return listOfNames;
+}
+
+function printSingleTraitNames(objectArray){
+  let listOfNames = [];
+  for(let i = 0; i < objectArray.length; i++){
+      let personInfo = objectArray[i].firstName + " " + objectArray[i].lastName;
+      listOfNames.push(personInfo);
+  }
+  return listOfNames;
+}
+function printDescendantNames(objectArray){
+  let listOfNames = [];
+  for(let i = 0; i < objectArray.length; i++){
+      let personInfo = "Descendant: " + objectArray[i].firstName + " " + objectArray[i].lastName + "\n";
+      console.log(personInfo);
+      listOfNames.push(personInfo);
+  }
+  return listOfNames;
+}
+
+function findChild(array, parent){
+  let separateArrays = createParentIdArrays(array);
+  let idMatch = searchForParentMatch(separateArrays, parent.id);
+  let children = convertIndexToObject(data, idMatch);
+  let childrenNames = (printChildNames(children));
+  return childrenNames;
+}
+
+
+
 
 function yesNo(input){
   return input.toLowerCase() == "yes" || input.toLowerCase() == "no";
